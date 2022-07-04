@@ -1,0 +1,438 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script src="https://unpkg.com/three@0.137.4/build/three.min.js"></script>
+    <script src="https://unpkg.com/three@0.137.4/examples/js/controls/OrbitControls.js"></script>
+  </head>
+<body>
+ <h1>スタジアム作る
+ </h1>
+ 最終系：舞台みたいな背景を作る
+目標：
+目的完成品
+建物
+作るもの
+家
+作業内容
+テクスチャを張ろう
+<br>
+変更点：
+  壁に囲まれた空間を作った
+
+
+</table><br>
+ <script>
+      // ページの読み込みを待つ
+      window.addEventListener('DOMContentLoaded', init);
+
+      function init() {
+        // サイズを指定
+        const width = 800
+        const height = 600;
+
+        // レンダラーを作成
+        var renderer = new THREE.WebGLRenderer();
+        document.body.appendChild(renderer.domElement);
+        renderer.setSize(width, height);
+        // 背景の色を設定
+        renderer.setClearColor(0xffddff);
+        //renderer.shadowMap.enabled = true;
+        renderer.shadowMap.enabled = true;
+
+        //var planeGeometry = new THREE.PlaneGeomatry(1,1);
+ 
+
+
+        // シーンを作成
+        const scene = new THREE.Scene();
+
+        // カメラを作成
+        const camera = new THREE.PerspectiveCamera(45, width / height);
+        // カメラの初期座標を設定
+        //camera.position.set(10, 10, 15);
+        //camera.position.set(10,10,10);
+        camera.position.set(180,120,50);
+        // カメラコントローラーを作成
+        const controls = new THREE.OrbitControls(camera, document.body); 
+        
+        // 平行光源1
+        var directionalLight1 = new THREE.DirectionalLight(0x222222);
+        directionalLight1.position.set(10, 10, 10);
+        directionalLight1.castShadow = true;
+        //light.castShadow = true;
+        // シーンに追加
+        scene.add(directionalLight1);
+        // 平行光源2
+        
+        var directionalLight2 = new THREE.DirectionalLight(0x888888);
+        directionalLight2.position.set(-10, 0, 0);
+        directionalLight2.castShadow = true;
+        
+        // new THREE.PointLight(色, 光の強さ, 距離, 光の減衰率)
+        const light = new THREE.PointLight(0xdd0000, +10, 50, 1.0);
+        light.position.set(0,15,15);
+        scene.add(light);
+        // シーンに追加
+        scene.add(directionalLight2);
+        // helper
+        const gridHelper = new THREE.GridHelper(2,10); // size, step
+        scene.add(gridHelper);
+        const axisHelper = new THREE.AxisHelper(2); //軸の長さ　X：赤、Y：緑、z：青
+        scene.add(axisHelper);
+
+        var pointLight2 = new THREE.PointLight(0xdddd00,+100,140,1,0);
+        pointLight2.position.set(140,100,100);
+        pointLight2.rotation.set(0,0,0);
+        scene.add(pointLight2);
+        /*
+        const light2 = THREE.PointLight(0xffffff,+100,50,1.0);
+        light2.position.set(150,100,0);
+        scene.add(light2);
+        */
+        //const light2 = new THREE.PointLight(0xff0000, +100, 50, 1.0);
+        const light2 = new THREE.DirectionalLight(0xff0000);
+        light2.position.set(0,150,0);
+        //scene.add(light2);
+
+        //const zimen = new THREE.PlaneGeometry(10,10);
+        //const zimen_g  = new THREE.MeshPhongMaterial();
+        //const zimen_Mesh = new THREE.Mesh(zimen,zimen_g);
+        //zimen_Mesh.rotation.set(45,45,0)
+        //zimen_Mesh.position.set(0,10,0);
+        //zimen_Mesh.receiveShadow = true;
+        //scene.add(zimen_Mesh);
+
+        //const kabe_1 = new THREE.Mesh(new BoxGeometry(100,100),new MeshPhongMaterial({castShadow:true}));
+        //const kabe_1 = new THREE.Mesh(new THREE.BoxGeometry(100,100,100),new THREE.MeshPhongMaterial());
+        var kabe_1 = new THREE.Mesh(new THREE.BoxGeometry(100,100,100),new THREE.MeshStandardMaterial());
+        
+        kabe_1.position.set(0,0,0);
+       //scene.add(kabe_1);
+
+        //const kankyou = new THREE.HemisphereLight(0x888888, 0x0000FF, 100);
+        //kankyou.position.set(100,100,0)
+        //scene.add(kankyou);
+        const kankyou = new THREE.AmbientLight(0xFFFFFF, 1);
+        kankyou.position.set(0,0,0);
+        scene.add(kankyou);
+       const texturestone = new THREE.TextureLoader().load("img/stone.jpg");
+
+
+        const dice = new THREE.BoxGeometry(1,1,1);
+        //var dice_texture = THREE.TextureLoader();
+        //var dice_text = dice_texture.load("img/tree0.png");
+        const dice_g = new THREE.MeshPhongMaterial();
+        //dice_g.map= dice_text;
+                // 木をスプライトで作成
+        //var textureLoader = new THREE.TextureLoader();  
+        //var texture = textureLoader.load("img/star.png");
+        //const material = new THREE.SpriteMaterial({ map: texture,});
+        //const dice_g = new THREE.MeshPhongMaterial({map:texture,transparent:true});
+        //const dice_nesh = new THREE.Mesh(dice,dice_g);
+        //dice_nesh.position.set(0,0,10);
+        //dice_nesh.rotation.set(45,0,0)
+        //scene.add(dice_nesh);
+        // 木テクスチャー読み込み
+        //var textureLoader = new THREE.TextureLoader();  
+        //var texture0 = textureLoader.load("img/tree0.png");
+        // 板ポリ左用
+        //var mat0 = new THREE.MeshLambertMaterial();
+        //mat0.map = texture0;
+        // 板ポリ右用
+        //var mat1 = new THREE.MeshLambertMaterial({transparent: true});
+        //mat1.map = texture0;
+        /*
+        const geo = new THREE.PlaneGeometry(1,5,1);
+        var text = new THREE.MeshPhongMaterial();
+        text.map=textureLoader.load("img/kakuseiga.png");
+        text.transparent=true;
+        //var text = new THREE.MeshPhongMaterial({map:textureLoader.load("img/star.png"),transparent:true});
+        var character= new THREE.Mesh(geo,text);
+        character.castShadow = true;
+        character.receiveShadow = true;
+        //var character = new THREE.Mesh(new PlaneGeometry(1,5,1),new THREE.MeshPhongMaterial({map:textureLoader.load("img/kakuseiga.png"),transparent:true}));
+        character.position.set(1,2.26,1);
+        scene.add(character);
+        */
+
+        /*
+        const kabe_r = new THREE.BoxGeometry(10,0,10);
+        const kabe_rg = new THREE.MeshPhongMaterial();
+        const kabe_r_mesh = new THREE.Mesh(kabe_r,kabe_rg);
+        kabe_r_mesh.receiveShadow = true;
+        kabe_r_mesh.position.set(0,0,0);
+        scene.add(kabe_r_mesh);
+        */
+
+        const feild_g = new THREE.BoxGeometry(100,40,100);
+        const feild_m = new THREE.MeshPhongMaterial({castShadow:true});
+        const feild =new THREE.Mesh(feild_g,feild_m);
+        feild.position.set(0,0,0);
+        //scene.add(feild)
+
+        var diceGroup = new THREE.Group();
+        const diceGeometry = new THREE.BoxGeometry(1,1,1);
+        const diceMaterial = new THREE.MeshPhongMaterial({castShadow:true});
+
+        for (let i = 0; i < 20; i++) {
+          const dice = new THREE.Mesh(diceGeometry,diceMaterial);
+          // ランダムな座標に配置
+          dice.position.x = 2 * (Math.random() - 0.5);
+          dice.position.y = 0.5 * Math.random();
+          dice.position.z = 2 * (Math.random() - 0.5);
+          // スケールを調整
+          dice.scale.set(0.5, 0.5, 0.5);
+          dice.rotation.x = 10 * (Math.random());
+          dice.rotation.y = Math.random();
+          dice.rotation.z = 10 * (Math.random());
+          diceGroup.add(dice);
+        }
+        diceGroup.position.set(100,0,0);
+        diceGroup.rotation.set(45,0,0);
+        //diceGroup.scale.(10,10,10);
+        /*
+        //diceGroup.scale.x = 100;
+        //diceGroup.scale.y = 100;
+        //diceGroup.scale.z = 100;
+        */
+        scene.add(diceGroup)
+
+        //const capital = new THREE.Mesh(new THREE.SphereGeometry(), new MeshPhongMaterial({transparent:true}));
+        //scene.add(capital)
+
+
+        
+
+
+        
+
+        // 木をスプライトで作成
+        var textureLoader = new THREE.TextureLoader();  
+        var texture = textureLoader.load("img/tree0.png");
+        const material = new THREE.SpriteMaterial({ map: texture});
+        
+        var planeGeometry = new THREE.PlaneGeometry(10,10);
+        //var planeMaterial = new THREE.MeshBasicMaterial({color: 0x00ff00});
+        var planeMaterial = new THREE.MeshPhongMaterial({ color: 0x000000 });
+        var plane = new THREE.Mesh(planeGeometry,planeMaterial);
+        plane.receiveShadow = true; //影がつく
+        plane.rotation.set( -Math.PI/2, 0, 0 );
+        plane.position.set(0,-5,0);
+        scene.add(plane);
+
+        // 木左
+        const sprite1 = new THREE.Sprite(material);
+        sprite1.scale.set(1,2,1);
+        sprite1.position.set(-1,1,0); //位置を指定
+        sprite1.castShadow = true; //影ができる
+        scene.add(sprite1);
+
+        // 木右
+        const sprite2 = new THREE.Sprite(material);
+        sprite2.scale.set(1,2,1);
+        sprite2.position.set(1,1,0); //位置を指定
+        scene.add(sprite2);
+        /*
+        const all = new THREE.Group()
+        all.add(sprite1); // 箱1を追加 
+        all.add(sprite2); // 箱2を追加 
+        //all.add(box3); // 箱3を追加 
+        //all.add(box4); // 箱4を追加 
+        all.position.set(0,0,0);//箱1～4のグループの原点の位置
+        scene.add(all); 
+        */
+        
+        var kabe_migi = new THREE.PlaneGeometry(1,1);
+        var kabe_migi_mesh = new THREE.MeshStandardMaterial({map:texturestone});
+        //var kabe_migi_mesh = new THREE.MeshStandardMaterial({color:0x101010});
+        kabe_migi_mesh.receiveShadow = true;
+        var kabe_migi_ = new THREE.Mesh(kabe_migi,kabe_migi_mesh)
+        kabe_migi_.position.set(0,0,-50);
+        kabe_migi_.scale.x = 100;
+        kabe_migi_.scale.y = 100;
+        scene.add(kabe_migi_);
+
+        var kabe_migi_2 = new THREE.PlaneGeometry(1,1);
+        var kabe_migi_2_mesh = new THREE.MeshStandardMaterial({color:0x101010,map:texturestone});
+        kabe_migi_2_mesh.receiveShadow = true;
+        var kabe_migi_2_ = new THREE.Mesh(kabe_migi,kabe_migi_mesh)
+        kabe_migi_2_.position.set(0,0,-50);
+        kabe_migi_2_.rotation.set(0,Math.PI,0);
+        kabe_migi_2_.scale.x = 100;
+        kabe_migi_2_.scale.y = 100;
+        kabe_migi_2_.receiveShadow = true;
+        scene.add(kabe_migi_2_);
+
+        var kabe_migi_2 = new THREE.PlaneGeometry(1,1);
+        var kabe_migi_2_mesh = new THREE.MeshStandardMaterial({color:0x101010,map:texturestone});
+        kabe_migi_2_mesh.receiveShadow = true;
+        var kabe_migi_2_ = new THREE.Mesh(kabe_migi,kabe_migi_mesh)
+        kabe_migi_2_.position.set(0,0,+50);
+        kabe_migi_2_.rotation.set(0,Math.PI,0);
+        kabe_migi_2_.scale.x = 100;
+        kabe_migi_2_.scale.y = 100;
+        scene.add(kabe_migi_2_);
+
+        var kabe_migi_3 = new THREE.PlaneGeometry(1,1);
+        var kabe_migi_3_mesh = new THREE.MeshStandardMaterial({color:0x101010,map:texturestone});
+        kabe_migi_3_mesh.receiveShadow = true;
+        var kabe_migi_3_ = new THREE.Mesh(kabe_migi,kabe_migi_mesh)
+        kabe_migi_3_.position.set(0,0,50);
+        kabe_migi_3_.rotation.set(Math.PI,Math.PI,0);
+        kabe_migi_3_.scale.x = 100;
+        kabe_migi_3_.scale.y = 100;
+        scene.add(kabe_migi_3_);
+
+        var kabe_migi_2_2 = new THREE.PlaneGeometry(1,1);
+        var kabe_migi_2_2_mesh = new THREE.MeshStandardMaterial({color:0x101010,map:texturestone});
+        kabe_migi_2_2_mesh.receiveShadow = true;
+        var kabe_migi_2_2_ = new THREE.Mesh(kabe_migi,kabe_migi_mesh)
+        kabe_migi_2_2_.position.set(0,0,+50);
+        kabe_migi_2_2_.rotation.set(0,Math.PI,0);
+        kabe_migi_2_2_.scale.x = 100;
+        kabe_migi_2_2_.scale.y = 100;
+        kabe_migi_2_2_.receiveShadow = true;
+        scene.add(kabe_migi_2_2_);
+
+        var kabe_hidari = new THREE.PlaneGeometry(1,1);
+        var kabe_hidari_mesh = new THREE.MeshStandardMaterial({color:0x101010,map:texturestone});
+        var kabe_hidari_ = new THREE.Mesh(kabe_migi,kabe_migi_mesh)
+        kabe_hidari_.position.set(0,0,0);
+        kabe_hidari_.scale.x = 100;
+        kabe_hidari_.scale.y = 100;
+        kabe_hidari_.scale.z = 100;
+        kabe_hidari_.position.set(-50,0,0);
+        kabe_hidari_.rotation.set(0,Math.PI / 2,0);
+        kabe_hidari_.receiveShadow = true;
+        //scene.add(kabe_hidari_)
+        scene.add(kabe_hidari_);
+
+        var kabe_hidari__ = new THREE.PlaneGeometry(1,1);
+        var kabe_hidari__mesh = new THREE.MeshStandardMaterial({color:0x101010,map:texturestone});
+        var kabe_hidari__ = new THREE.Mesh(kabe_migi,kabe_migi_mesh)
+        kabe_hidari__.position.set(0,0,0);
+        kabe_hidari__.scale.x = 100;
+        kabe_hidari__.scale.y = 100;
+        kabe_hidari__.scale.z = 100;
+        kabe_hidari__.position.set(-50,0,0);
+        kabe_hidari__.rotation.set(0,-Math.PI / 2,0);
+        kabe_hidari__.receiveShadow = true;
+        //scene.add(kabe_hidari_)
+        scene.add(kabe_hidari__);
+
+        var kabe_hidari = new THREE.PlaneGeometry(1,1);
+        var kabe_hidari_mesh = new THREE.MeshStandardMaterial({color:0x101010,map:texturestone});
+        var kabe_hidari_ = new THREE.Mesh(kabe_migi,kabe_migi_mesh)
+        kabe_hidari_.position.set(0,0,0);
+        kabe_hidari_.scale.x = 100;
+        kabe_hidari_.scale.y = 100;
+        kabe_hidari_.scale.z = 100;
+        kabe_hidari_.position.set(+50,0,0);
+        kabe_hidari_.rotation.set(0,Math.PI / 2,0);
+        kabe_hidari_.receiveShadow = true;
+        //scene.add(kabe_hidari_)
+        scene.add(kabe_hidari_);
+
+        var kabe_hidari_2_ = new THREE.PlaneGeometry(1,1);
+        var kabe_hidari_2_mesh = new THREE.MeshStandardMaterial({color:0x101010,map:texturestone});
+        var kabe_hidari_2_ = new THREE.Mesh(kabe_migi,kabe_migi_mesh)
+        kabe_hidari_2_.position.set(0,0,0);
+        kabe_hidari_2_.scale.x = 100;
+        kabe_hidari_2_.scale.y = 100;
+        kabe_hidari_2_.scale.z = 100;
+        kabe_hidari_2_.position.set(+50,0,0);
+        kabe_hidari_2_.rotation.set(0,-Math.PI / 2,0);
+        kabe_hidari_2_.receiveShadow = true;
+        //scene.add(kabe_hidari_)
+        scene.add(kabe_hidari_2_);
+        
+        var tenzyouGroup = new THREE.Group();
+        var tenzyou = new THREE.Mesh(new THREE.PlaneGeometry(100,100),new THREE.MeshStandardMaterial({color:0xdddddd,map:texturestone}));
+        //tenzyou.rotation.set(Math.PI,0,0);
+        tenzyou.rotation.set(Math.PI/2,Math.PI,Math.PI);
+        tenzyou.position.set(0,50,0);
+        tenzyouGroup.add(tenzyou);
+
+        
+        var tenzyou = new THREE.Mesh(new THREE.PlaneGeometry(100,100),new THREE.MeshStandardMaterial({color:0xdddddd,map:texturestone}));
+        //tenzyou.rotation.set(Math.PI,0,0);
+        tenzyou.rotation.set(-Math.PI/2,Math.PI,Math.PI);
+        tenzyou.position.set(0,50,0);
+        tenzyouGroup.add(tenzyou);
+
+        var tenzyou = new THREE.Mesh(new THREE.PlaneGeometry(100,100),new THREE.MeshStandardMaterial({color:0xdddddd,map:texturestone}));
+        //tenzyou.rotation.set(Math.PI,0,0);
+        tenzyou.rotation.set(Math.PI/2,Math.PI,Math.PI);
+        tenzyou.position.set(0,-50,0);
+        tenzyouGroup.add(tenzyou);
+
+        
+        var tenzyou = new THREE.Mesh(new THREE.PlaneGeometry(100,100),new THREE.MeshStandardMaterial({color:0xdddddd,map:texturestone}));
+        //tenzyou.rotation.set(Math.PI,0,0);
+        tenzyou.rotation.set(-Math.PI/2,Math.PI,Math.PI);
+        tenzyou.position.set(0,-50,0);
+        tenzyouGroup.add(tenzyou);
+
+        scene.add(tenzyouGroup);
+        
+        var kabe_hidari_1 = new THREE.PlaneGeometry(1,1);
+        var kabe_hidari_mesh = new THREE.MeshStandardMaterial({color:0x111111,map:texturestone});
+        kabe_hidari_group = new THREE.Group()
+        
+        for (let i ;i <= 360;i = i+10 ){
+            document.write("テスト")
+            //kabe_hidari_mesh.color = 0xffffff;
+            /*
+            kabe_hidari_ = new THREE.Mesh(kabe_hidari_1,kabe_migi_mesh);
+            kabe_hidari_.position.set(0,0,0);
+            kabe_hidari_.scale.x = 100;
+            kabe_hidari_.scale.y = 100;
+            kabe_hidari_.scale.z = 100;
+            kabe_hidari_.position.set(50,i * 2,0,0);
+            kabe_hidari_.rotation.set(0,i,0);
+            kabe_hidari_group.add(kabe_hidari_);
+            */
+
+        }
+
+        var kabe_hidari_ = new THREE.Mesh(kabe_migi,kabe_migi_mesh)
+        kabe_hidari_.position.set(0,0,0);
+        kabe_hidari_.scale.x = 100;
+        kabe_hidari_.scale.y = 100;
+        kabe_hidari_.scale.z = 100;
+        kabe_hidari_.position.set(0,0,50);
+        kabe_hidari_.rotation.set(0,-Math.PI ,0);
+        kabe_hidari_.receiveShadow = true;
+        scene.add(kabe_hidari_);
+        //scene.add(kabe_hidari_group);
+        
+        
+
+
+
+        update();
+
+        // 毎フレーム時に実行されるループイベントです
+        function update() {
+          // レンダリング
+          renderer.render(scene, camera);
+          requestAnimationFrame(update);
+          dice_nesh.rotation.x += 0.01;
+          zimen_Mesh.position.x += 0.02;
+          //zimen_Mesh.rotation.y += 0.02;
+          kabe_1.position.y += 1.0;
+          //camera.position.x += 1.01;
+          //camera.rotation.x += 0.01;
+          //diceGroup.rotation.x += 100*Math.random();
+          pointLight2.position.x -=100;
+          pointLight2.rotation.x += 1;
+          kabe_hidari_.rotation.y += 0.1;
+          if (kabe_hidari_.rotation % 10 == 0){
+            kabe_hidari_.color = 0xffffff;
+          }
+
+          
+        }
+      }
+    </script>
+</body>
